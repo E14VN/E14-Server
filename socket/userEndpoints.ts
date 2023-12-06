@@ -7,9 +7,10 @@ import { ObjectId } from 'mongodb';
 
 export class UserEnpoints {
     constructor(clientSocket: socket.Socket, mainDb: E14DataBase) {
-        clientSocket.on("/userEndpoints/emit/emergencyReport", (data) => 
-            this.emergencyProcedure(clientSocket, mainDb, data)
-        );
+        clientSocket.on("/userEndpoints/emit/emergencyReport", async (data, callback) => {
+            this.emergencyProcedure(clientSocket, mainDb, data);
+            callback();
+        });
     }
 
     async emergencyProcedure(clientSocket: socket.Socket, mainDb: E14DataBase, data) {
@@ -19,8 +20,7 @@ export class UserEnpoints {
         console.log("[EMERGENCY | OpenStreetMap] Reversing user's geocoding state...");
         let stateCode = await reverseGeocodingToISO3166(data.fireLocation.latitude, data.fireLocation.longitude);
     
-        console.log("[EMERGENCY | GOONG] Reversing user's geocoding address...")
-        //https://rsapi.goong.io/Geocode?latlng=16.8049713,107.1041821&api_key=EW7QocbzUy8IDiVNZ0rS7vJ0upOE2KxF4Px0RpqF
+        console.log("[EMERGENCY | GOONG] Reversing user's geocoding address...");
         let addressName = await reverseGeocodingToAddress(data.fireLocation.latitude, data.fireLocation.longitude);
 
         console.log(`[EMERGENCY | Server] Sending reports to ISO3166 code: ${stateCode}`);

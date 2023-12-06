@@ -14,16 +14,17 @@ export class E14FirebaseMessaging {
         this.messagingPort = getMessaging(app);
     }
 
-    async sendEmegencyLocationNotification(latitude: string, longitude: string) {
+    async sendEmegencyLocationNotification(latitude: string, longitude: string, addressName: string) {
         await this.messagingPort.send({
             topic: "emergency_service_receiver",
             data: {
                 type: "fire_emergency",
                 latitude: latitude,
-                longitude: longitude
+                longitude: longitude,
+                addressName: addressName,
             },
             android: {
-                priority: "high"
+                priority: "high",
             }
         });
     }

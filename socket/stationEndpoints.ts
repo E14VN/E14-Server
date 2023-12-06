@@ -91,7 +91,7 @@ export class StationEnpoints {
             });
 
             console.log("[EMERGENCY | Firebase] Sending report to notfify users.");
-            await notification.sendEmegencyLocationNotification(eventObject.latitude.toString(), eventObject.longitude.toString());
+            await notification.sendEmegencyLocationNotification(eventObject.latitude.toString(), eventObject.longitude.toString(), eventObject.address.toString());
 
             clientSocket.emit("/stationEndpoints/receive/emergenciesOverall",
                 (await mainDb.eventsLoad.findOne({
